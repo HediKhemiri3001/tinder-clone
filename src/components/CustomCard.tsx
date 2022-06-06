@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import React, { FC } from "react";
 import styles from "./CustomCard.module.css";
-import { Content, IContent } from "../App";
+import { Content, IContent } from "../pages/Home";
 import Card from "@mui/material/Card";
 import CardActionArea from "@mui/material/CardActionArea";
 import CardMedia from "@mui/material/CardMedia";
@@ -26,12 +26,10 @@ export const CustomCard: FC<CustomCardProps> = ({
   //Swipe events handlers
   const handlers = useSwipeable({
     onSwipedLeft: (eventData) => {
-      console.log("Disliked !", eventData);
       dislike(content);
       pass(index);
     },
     onSwipedRight: (eventData) => {
-      console.log("Liked !", eventData);
       like(content);
       pass(index);
     },

@@ -10,20 +10,41 @@ import { useSwipeable } from "react-swipeable";
 
 export interface CustomCardProps {
   content: Content;
-  key: number;
+  index: number;
+  like: (content: Content) => void;
+  dislike: (content: Content) => void;
+  pass: (currentIndex: number) => void;
 }
 
 export const CustomCard: FC<CustomCardProps> = ({
   content,
-  key,
+  like,
+  dislike,
+  pass,
+  index,
 }): JSX.Element => {
+  //Swipe events handlers
   const handlers = useSwipeable({
-    onSwipedLeft: (eventData) => console.log("User Swiped left!", eventData),
-    onSwipedRight: (eventData) => console.log("User Swiped right!", eventData),
+    onSwipedLeft: (eventData) => {
+      console.log("Disliked !", eventData);
+      dislike(content);
+      pass(index);
+    },
+    onSwipedRight: (eventData) => {
+      console.log("Liked !", eventData);
+      like(content);
+      pass(index);
+    },
   });
   return (
     <div className={styles["container"]}>
-      <div className={styles["handlingzone"]} {...handlers}></div>
+      {/*Overlay a div over the MUI component, because MUI components can't handle the swipe event,
+      we need a native html element for it to function, in this case a div.*/}
+      <div
+        className={styles["handlingzone"]}
+        {...handlers}
+        id={content.id.toString()}
+      ></div>
       <div className={styles["contentzone"]}>
         <Card sx={{ maxWidth: 500 }}>
           <CardActionArea disableRipple>
